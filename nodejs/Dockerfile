@@ -21,9 +21,9 @@ RUN apk add --update-cache \
   && rm -rf /var/cache/apk/*
 # Setting the runtime user
 USER node
-# Copy dependencies
+# Copy dependencies from builder with new ownership
 COPY --chown=node:node --from=build /app /app
-# Copy source
+# Copy source from local folder
 COPY --chown=node:node src ./src
 # Optional: add default start command
 CMD ["npm", "start"]
