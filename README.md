@@ -2,6 +2,13 @@
 
 In this repository we collect example Dockerfiles for different stacks following best practices.
 
+### GAP build types
+
+We have three build types for GAP:
+* ~~buildpack~~ (deprecated): you don't have to provide build instructions, GAP will figure out your stack and build the image with the help of heroku buildpacks.
+* docker: you provide a `Dockerfile` in your repository root and GAP will build your image in the CloudBuild step.
+* pre-built image: you build and push your image to `eu.gcr.io` however you want and GAP will use that image.
+
 ## Best practices
 * Always use either [Docker Official Images](https://docs.docker.com/docker-hub/official_images/) or images from Verified Publishers (you can filter for such images on Docker Hub).
 * If you need additional packages try to be minimal (ex. use `--no-install-recommends` flag) and clean up package manager cache in the same `RUN` command (ex. `apt-get clean`).
