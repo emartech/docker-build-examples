@@ -17,3 +17,4 @@ In this repository we collect example Dockerfiles for different stacks following
 - [Java SpringBoot with Gradle and Jib](java-gradle-jib/)
 - [Java SpringBoot with Maven and Jib](java-mvn-jib/)
 - [PHP Apache](php-apache/)
+- [Scala with SBT Native Packager](scala-native-packager/)
