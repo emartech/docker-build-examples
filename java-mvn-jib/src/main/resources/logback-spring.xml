@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <property resource="application.properties" />
+    <contextName>${spring.application.name}</contextName>
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+        <providers>
+            <pattern>
+                <pattern>
+                    {
+                        "timestamp": "%date{yyyy-MM-dd'T'HH:mm:ss.SSSXXX}",
+                        "logger": "%logger{1}",
+                        "level": "%level",
+                        "thread": "%thread",
+                        "message": "%message"
+                    }
+                </pattern>
+            </pattern>
+            <arguments>
+                <includeNonStructuredArguments>false</includeNonStructuredArguments>
+            </arguments>
+            <stackTrace>
+                <fieldName>stack</fieldName>
+            </stackTrace>
+        </providers>
+        </encoder>
+    </appender>
+    <root level="INFO">
+        <appender-ref ref="CONSOLE" />
+    </root>
+</configuration>
