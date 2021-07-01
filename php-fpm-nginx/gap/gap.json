@@ -1,0 +1,17 @@
+{
+    "appName": "example-app",
+    "namespace": "example",
+    "buildType": "docker",
+    "manualConfigurationHandling": true,
+    "deployments": [
+        {
+            "name": "web",
+            "command": "php-fpm",
+            "ingress": true
+        },
+        {
+            "name": "worker",
+            "command": "php index.php"
+        }
+    ]
+}
