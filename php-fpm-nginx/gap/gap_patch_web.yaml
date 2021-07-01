@@ -1,0 +1,65 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: example-app-web
+spec:
+  template:
+    spec:
+      initContainers:
+      - name: copy-source
+        image: eu.gcr.io/ems-gap-images/example-app:latest
+        volumeMounts:
+          - name: shared-volume
+            mountPath: /shared
+        command: ["cp", "-R", "/var/www/htdocs/.", "/shared"]
+      containers:
+      - name: example-app-web
+        livenessProbe: null
+        readinessProbe: null
+        volumeMounts:
+          - name: shared-volume
+            mountPath: /var/www/html
+      - name: nginx-proxy
+        image: eu.gcr.io/ems-gap-images/nginx-unprivileged:latest
+        ports:
+        - containerPort: 8080
+          protocol: TCP
+        livenessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /healthcheck
+            port: 8080
+            scheme: HTTP
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 10
+        readinessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /healthcheck
+            port: 8080
+            scheme: HTTP
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 10
+        resources:
+          requests:
+            cpu: 50m
+            memory: 50Mi
+        volumeMounts:
+        - mountPath: /etc/nginx/templates/
+          name: nginx-conf
+        - mountPath: /var/www/html
+          name: shared-volume
+      volumes:
+      - configMap:
+          defaultMode: 420
+          items:
+          - key: nginx.conf.template
+            path: default.conf.template
+          name: example-app-nginx-config
+        name: nginx-conf
+      - name: shared-volume
+        emptyDir: {}
+

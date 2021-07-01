@@ -24,4 +24,5 @@ We have three build types for GAP:
 - [Java SpringBoot with Gradle and Jib](java-gradle-jib/)
 - [Java SpringBoot with Maven and Jib](java-mvn-jib/)
 - [PHP Apache](php-apache/)
+- [PHP FPM NGINX](php-fpm-nginx/)
 - [Scala with SBT Native Packager](scala-native-packager/)
