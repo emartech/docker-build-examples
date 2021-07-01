@@ -7,7 +7,7 @@ WORKDIR /app
 # Copy dependency descriptors
 COPY package.json package-lock.json .npmrc ./
 # Install dependencies
-RUN npm i
+RUN npm ci
 # Build
 COPY src ./src
 COPY  tsconfig.json ./
@@ -21,7 +21,7 @@ WORKDIR /app
 # Copy dependency descriptors
 COPY package.json package-lock.json .npmrc ./
 # Install dependencies
-RUN npm i --only=prod
+RUN npm ci --only=prod
 # Cleanup
 RUN rm .npmrc
 
