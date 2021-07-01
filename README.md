@@ -21,3 +21,4 @@ We have three build types for GAP:
 * [TypeScript](typescript/)
 * [Java SpringBoot with Gradle](java-gradle/)
 * [PHP Apache](php-apache/)
+* [PHP FPM NGINX](php-fpm-nginx/)
