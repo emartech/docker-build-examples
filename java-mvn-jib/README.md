@@ -2,6 +2,8 @@
 
 > :warning: Since jib directly emits a docker image (there is no Dockerfile), this only works with the [prebuilt image](https://gap-docs.gservice.emarsys.net/using-prebuilt-image.html) gap feature.
 
+> :warning: Since jib builds a separate image for each processes in multi project repositories for GAP this only works with a single process per repository. For multi process builds a custom dockerfile is the simplest way at this time. See the scala-sbt-native-multi example.
+
 Base image is configured in the `pom.xml` file using the `from.image` option under the jib maven plugin configuration. For additional configuration, see the [documentation](https://github.com/GoogleContainerTools/jib/tree/master/jib-maven-plugin#extended-usage)
 
 To build an image and publish it to the local docker daemon:
