@@ -17,10 +17,11 @@ fastify.listen(3000, '0.0.0.0', function (err, address) {
 })
 
 // Handle shutdown (close server, close database connection, wait for ongoing requests to finish, etc)
-process.on("SIGTERM", () => {
+const closeServer = async () => {
   fastify.log.info("Shutting down gracefully...");
-  fastify.close().then(() => {
-    console.log("Server shut down successfully");
-    process.exit(0);
-  });
-});
+  await fastify.close();
+  console.log("Server shut down successfully");
+  process.exit(0);
+};
+process.on("SIGINT", closeServer);
+process.on("SIGTERM", closeServer);
