@@ -26,3 +26,4 @@ We have three build types for GAP:
 - [PHP Apache](php-apache/)
 - [PHP FPM NGINX](php-fpm-nginx/)
 - [Scala with SBT Native Packager](scala-native-packager/)
+- [Scala with SBT Native Packager Multi-process](scala-sbt-native-multi)
