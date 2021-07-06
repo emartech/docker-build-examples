@@ -16,7 +16,6 @@ ENV NODE_ENV production
 WORKDIR /app
 # Install needed packages and cleanup in one RUN command
 RUN apk add --update-cache \
-    curl \
     dumb-init \
   && rm -rf /var/cache/apk/*
 # Setting the runtime user
