@@ -17,6 +17,7 @@ WORKDIR /app
 # Install needed packages and cleanup in one RUN command
 RUN apk add --update-cache \
     curl \
+    dumb-init \
   && rm -rf /var/cache/apk/*
 # Setting the runtime user
 USER node
@@ -24,5 +25,7 @@ USER node
 COPY --chown=node:node --from=build /app/node_modules /app/node_modules
 # Copy source from local folder
 COPY --chown=node:node src /app/src
+# By using dumb-init and running the script directly with node, all signal will be forwarded to your node application
 # Optional: add default start command
-CMD ["npm", "start"]
+CMD ["dumb-init", "node", "/app/src/server.js"]
+
