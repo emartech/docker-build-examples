@@ -14,10 +14,9 @@ FROM node:14-alpine AS prod
 # Set environtment to production
 ENV NODE_ENV production
 WORKDIR /app
-# Install needed packages and cleanup in one RUN command
-RUN apk add --update-cache \
-    dumb-init \
-  && rm -rf /var/cache/apk/*
+# Install needed packages with cleanup
+RUN apk add --no-cache \
+    dumb-init
 # Setting the runtime user
 USER node
 # Copy dependencies from builder with new ownership
