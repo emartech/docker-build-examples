@@ -8,6 +8,8 @@ WORKDIR /app
 COPY package.json package-lock.json .npmrc /app/
 # Install dependencies
 RUN npm ci --only=production
+# Cleanup
+RUN rm .npmrc
 
 # Production image
 FROM node:14-alpine AS prod
