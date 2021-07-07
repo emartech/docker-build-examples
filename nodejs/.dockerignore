@@ -3,4 +3,3 @@ node_modules
 Dockerfile
 .git
 .gitignore
-.npmrc
