@@ -16,10 +16,11 @@ server.listen(3000, "0.0.0.0", function (err, address) {
 });
 
 // Handle shutdown (close server, close database connection, wait for ongoing requests to finish, etc)
-process.on("SIGTERM", () => {
+const closeServer = async () => {
   server.log.info("Shutting down gracefully...");
-  server.close().then(() => {
-    console.log("Server shut down successfully");
-    process.exit(0);
-  });
-});
+  await server.close();
+  console.log("Server shut down successfully");
+  process.exit(0);
+};
+process.on("SIGINT", closeServer);
+process.on("SIGTERM", closeServer);
