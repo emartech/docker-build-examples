@@ -24,6 +24,6 @@ COPY --chown=node:node --from=build /app/node_modules /app/node_modules
 # Copy source from local folder
 COPY --chown=node:node src /app/src
 # By using dumb-init and running the script directly with node, all signal will be forwarded to your node application
-# Optional: add default start command
 ENTRYPOINT ["dumb-init", "--"]
+# Optional: add default start command
 CMD ["node", "/app/src/server.js"]
