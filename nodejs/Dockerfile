@@ -5,9 +5,9 @@ ARG NPM_TOKEN
 # Setting the working directory
 WORKDIR /app
 # Copy dependency descriptors
-COPY package.json package-lock.json /app/
+COPY package.json package-lock.json .npmrc /app/
 # Install dependencies
-RUN --mount=type=secret,mode=0644,id=npmrc,target=/app/.npmrc npm ci --only=production
+RUN npm ci --only=production
 
 # Production image
 FROM node:14-alpine AS prod
