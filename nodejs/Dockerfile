@@ -1,5 +1,5 @@
 # Starting with a build environment
-FROM node:14-alpine AS npm
+FROM node:14-alpine AS build
 # Taking build time arguments
 ARG NPM_TOKEN
 # Setting the working directory
