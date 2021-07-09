@@ -1,11 +1,12 @@
 # Starting with a build environment
-FROM node:14-alpine AS npm
+FROM node:14-alpine AS build
 # Taking build time arguments
 ARG NPM_TOKEN
 # Setting the working directory
 WORKDIR /app
 # Copy dependency descriptors
-COPY package.json package-lock.json .npmrc /app/
+COPY package.json package-lock.json /app/
+RUN npm config set //registry.npmjs.org/:_authToken=$NPM_TOKEN
 # Install dependencies
 RUN npm ci --only=production
 # Cleanup
