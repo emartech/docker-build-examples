@@ -25,5 +25,6 @@ We have three build types for GAP:
 - [Java SpringBoot with Maven and Jib](java-mvn-jib/)
 - [PHP Apache](php-apache/)
 - [PHP FPM NGINX](php-fpm-nginx/)
+- [Ruby on Rails](ruby/)
 - [Scala with SBT Native Packager](scala-native-packager/)
 - [Scala with SBT Native Packager Multi-process](scala-sbt-native-multi)
