@@ -1,25 +1,40 @@
 # Create build env and install dependencies
-FROM php:7.4-alpine as build
+FROM php:8.0-alpine as build
 # Get composer
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --version=2.1.3 --filename=composer
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 WORKDIR /var/www/htdocs
 
 COPY composer.json ./
+COPY composer.lock ./
 
 RUN composer install --no-dev --no-interaction
 
 # Create production image
-FROM php:7.4-alpine as production
+FROM alpine:3 as production
 # Add application user (will use uid=1000)
 RUN adduser -g www-data -D application
 # Install packages and PHP extensions
-RUN apk add --update-cache apache2 php7-apache2 \
-  && docker-php-ext-install opcache \
-  # others
+RUN apk add --update-cache \
+    apache2 \
+    curl \
+    gnu-libiconv \
+    nano \
+    openssl \
+    php8 \
+    php8-apache2 \
+    php8-common \
+    php8-curl \
+    php8-iconv \
+    php8-mbstring \
+    php8-opcache \
+    php8-openssl \
+  && ln -s /usr/bin/php8 /usr/bin/php \
   && rm -rf /var/cache/apk/*
 # Disable Apache default port
 RUN sed -i 's/Listen 80/# Listen 80/g' /etc/apache2/httpd.conf
+# enable apache rewrite module
+RUN sed -i 's+#LoadModule rewrite_module modules/mod_rewrite.so+LoadModule rewrite_module modules/mod_rewrite.so+g' /etc/apache2/httpd.conf
 # Redirect logging
 RUN ln -s /dev/stderr /var/log/apache2/error.log \
   && ln -s /dev/stdout /var/log/apache2/access.log \
