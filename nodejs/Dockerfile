@@ -1,31 +1,51 @@
-# Starting with a build environment
-FROM node:14-alpine AS build
-# Taking build time arguments
-ARG NPM_TOKEN
-# Setting the working directory
-WORKDIR /app
-# Copy dependency descriptors
-COPY package.json package-lock.json .npmrc /app/
-# Install dependencies
-RUN npm ci --only=production
-# Cleanup
-RUN rm .npmrc
+# --------- STAGE: BUILD ---------
 
-# Production image
-FROM node:14-alpine AS prod
-# Set environtment to production
+FROM node:14-alpine AS build
+
+ARG NPM_TOKEN
+
+WORKDIR /tmp
+
+# Install dependencies
+COPY package.json package-lock.json .npmrc /tmp/
+RUN npm ci --only=production
+
+# --------- STAGE: APP ---------
+
+FROM alpine AS app
+
+# Install Node.js, NPM, dumb-init
+RUN apk add --update-cache \
+      nano \
+      nodejs \
+      dumb-init && \
+    rm -rf /var/cache/apk/*
+
+# Create application user
+ENV USER_NAME=application
+ENV USER_GROUP=application
+
+RUN addgroup \
+      --system ${USER_GROUP} && \
+    adduser \
+      --system --no-create-home --disabled-password \
+      --uid=1000 --ingroup=${USER_GROUP} ${USER_NAME}
+
+# Setup workdir
+ENV APP_DIR=/app
+
+RUN mkdir -p ${APP_DIR} && \
+    chown -R ${USER_NAME}:${USER_GROUP} ${APP_DIR}
+
+# Setup application
+COPY --chown=${USER_NAME}:${USER_GROUP} --from=build /tmp/node_modules ${APP_DIR}/node_modules/
+COPY --chown=${USER_NAME}:${USER_GROUP} src/ ${APP_DIR}/src/
+
+# Set exection details
+USER ${USER_NAME}
+WORKDIR ${APP_DIR}
 ENV NODE_ENV production
-WORKDIR /app
-# Install needed packages with cleanup
-RUN apk add --no-cache \
-    dumb-init
-# Setting the runtime user
-USER node
-# Copy dependencies from builder with new ownership
-COPY --chown=node:node --from=build /app/node_modules /app/node_modules
-# Copy source from local folder
-COPY --chown=node:node src /app/src
-# By using dumb-init and running the script directly with node, all signal will be forwarded to your node application
+
+# Start application
 ENTRYPOINT ["dumb-init", "--"]
-# Optional: add default start command
-CMD ["node", "/app/src/server.js"]
+CMD ["node", "index.js"]
