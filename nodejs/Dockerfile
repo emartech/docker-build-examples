@@ -14,12 +14,12 @@ RUN npm ci --only=production
 
 FROM alpine AS app
 
-ENV NODE_VERSION=14.17.6-r0
+ENV NODE_VERSION=14
 
 # Install Node.js, NPM, dumb-init
 RUN apk add --update-cache \
       nano \
-      nodejs=${NODE_VERSION} && \
+      nodejs=~${NODE_VERSION} && \
     rm -rf /var/cache/apk/*
 
 # Create application user
@@ -48,4 +48,4 @@ WORKDIR ${APP_DIR}
 ENV NODE_ENV production
 
 # Start application
-CMD ["node", "index.js"]
+CMD ["node", "src/index.js"]
