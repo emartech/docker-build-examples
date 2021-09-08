@@ -12,14 +12,11 @@ RUN npm ci --only=production
 
 # --------- STAGE: APP ---------
 
-FROM alpine:3.14 AS app
+FROM node:14-alpine3.14 AS app
 
-ENV NODE_VERSION=14
-
-# Install Node.js, NPM, dumb-init
+# Install Nano
 RUN apk add --update-cache \
       nano \
-      nodejs=~${NODE_VERSION} && \
     rm -rf /var/cache/apk/*
 
 # Create application user
