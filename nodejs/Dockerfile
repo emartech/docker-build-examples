@@ -12,7 +12,7 @@ RUN npm ci --only=production
 
 # --------- STAGE: APP ---------
 
-FROM alpine AS app
+FROM alpine:3.14 AS app
 
 ENV NODE_VERSION=14
 
